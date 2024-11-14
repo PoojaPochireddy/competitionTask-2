@@ -32,6 +32,15 @@ namespace MarsQACompetitionTask.Pages
             Password.SendKeys(ReadJsonData.GetData("User.password"));
             LoginBtn.Click();
         }
+
+        public void SigninStep(String filename)
+        {
+            //Driver.NavigateUrl();
+            SignInBtn.Click();
+            Email.SendKeys(ReadJsonData.GetData("User.username", filename));
+            Password.SendKeys(ReadJsonData.GetData("User.password", filename));
+            LoginBtn.Click();
+        }
        /* public void Login()
         {
             SignInBtn.Click();

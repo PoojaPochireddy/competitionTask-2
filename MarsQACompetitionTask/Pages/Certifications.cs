@@ -9,19 +9,12 @@ using MarsQACompetitionTask.Utilities;
 using NUnit.Framework;
 using OpenQA.Selenium;
 using System.Collections;
+using AventStack.ExtentReports;
+using OpenQA.Selenium.Support.UI;
+using SeleniumExtras.WaitHelpers;
+
 namespace MarsQACompetitionTask.Pages 
 {
-    /*
-   public class Certifications : CommonDriver
-    {
-        [Test]
-        public void TestData()
-        {
-           driver.Navigate().GoToUrl(Utilities.ReadJsonData.GetData("Education[0].country"));
-           Console.WriteLine(Utilities.ReadJsonData.GetData("Education[0].country"));
-        }
-       
-    }*/
     public class Certification
     {
         private readonly IWebDriver driver;
@@ -38,7 +31,9 @@ namespace MarsQACompetitionTask.Pages
         private IWebElement DeleteCertification => driver.FindElement(By.XPath("//tbody/tr/td[4]/span[2]/i[1]"));
         private IWebElement DelMessage => driver.FindElement(By.XPath("//*[@id=\"account-profile-section\"]"));
         private IWebElement RemoveButton => driver.FindElement(By.XPath("//*[@id=\"account-profile-section\"]/div/section[2]/div/div/div/div[3]/form/div[3]/div/div[2]/div/table/tbody[1]/tr/td[3]/span[2]/i"));
-
+       
+        protected ExtentReports _extent;
+        protected ExtentTest _test;
 
         //Duplicate Certifications Details cant be added so cleanup the existing education records first //
         public void CleanEducationTable()
@@ -64,10 +59,11 @@ namespace MarsQACompetitionTask.Pages
         {
             CertificationTab1.Click();
         }
-        public void CreateCertification()
+        public void CreateCertification(String fileName)
+
         {
             IList certdetails;
-            certdetails = Utilities.ReadJsonData.GetDataObject2("Certification[*]");
+            certdetails = Utilities.ReadJsonData.GetDataObject2("Certification[*]", fileName);
             int j = 0;
             j = certdetails.Count;
 
@@ -79,22 +75,29 @@ namespace MarsQACompetitionTask.Pages
 
             AddNewBtn.Click();
             CName.Click();
-            CName.Clear();
-            CName.SendKeys(Utilities.ReadJsonData.GetData("Certification[" + i + "].CertificationName"));
+           // CName.Clear();
+            CName.SendKeys(Utilities.ReadJsonData.GetData("Certification[" + i + "].CertificationName",fileName));
 
             CertifiedFrom.Click();
-            CertifiedFrom.SendKeys(Utilities.ReadJsonData.GetData("Certification[" + i + "].CertifiedFrom"));
+            CertifiedFrom.SendKeys(Utilities.ReadJsonData.GetData("Certification[" + i + "].CertifiedFrom", fileName));
 
             CYearDrpdown.Click();
-                CYearDrpdown.SendKeys(Utilities.ReadJsonData.GetData("Certification[" + i + "].CyrDropdown"));
+                CYearDrpdown.SendKeys(Utilities.ReadJsonData.GetData("Certification[" + i + "].CyrDropdown", fileName));
 
 
             AddCertification.Click();
-            Thread.Sleep(1000);
-        }
+                //Thread.Sleep(1000);
+                //Thread.Sleep(6000);
+                //WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(20));
+//
+             //wait.PollingInterval = TimeSpan.FromMilliseconds(200);
+               // wait.Until(ExpectedConditions.ElementIsVisible(By.XPath("//*[normalize-space()='Certification details added']")));
+
+              //  _test.Log(Status.Info, "Certification details added");
+            }
 
         }
-        public void CancelAddedCertification()
+        public void CancelAddedCertification(String fileName)
         {
 
             CertificationTab1.Click();
@@ -106,19 +109,19 @@ namespace MarsQACompetitionTask.Pages
            
             CName.Click();
             CName.Clear();
-            CName.SendKeys(Utilities.ReadJsonData.GetData("Certification[" + i + "].CertificationName"));
+            CName.SendKeys(Utilities.ReadJsonData.GetData("Certification[" + i + "].CertificationName", fileName));
 
             CertifiedFrom.Click();
-            CName.SendKeys(Utilities.ReadJsonData.GetData("Certification[" + i + "].CertifiedFrom"));
+            CName.SendKeys(Utilities.ReadJsonData.GetData("Certification[" + i + "].CertifiedFrom",fileName));
 
 
             CYearDrpdown.Click();
-            CName.SendKeys(Utilities.ReadJsonData.GetData("Certification[" + i + "].CyrDropdown"));
+            CName.SendKeys(Utilities.ReadJsonData.GetData("Certification[" + i + "].CyrDropdown",fileName));
 
             CancelCertification.Click();
         }
 
-        public void EditCertification1()
+        public void EditCertification1(String fileName)
         {
             Thread.Sleep(2000);
             EditCertification.Click();
@@ -126,13 +129,13 @@ namespace MarsQACompetitionTask.Pages
 
             CName.Click();
             CName.Clear();
-            CName.SendKeys(Utilities.ReadJsonData.GetData("Certification[" + i + "].CertificationName"));
+            CName.SendKeys(Utilities.ReadJsonData.GetData("Certification[" + i + "].CertificationName",fileName));
 
 
             CUpdateBtn.Click();
 
         }
-        public void CancelEditCertification()
+        public void CancelEditCertification(String fileName)
         {
             Thread.Sleep(2000);
             EditCertification.Click();
@@ -141,7 +144,7 @@ namespace MarsQACompetitionTask.Pages
 
             CName.Click();
             CName.Clear();
-            CName.SendKeys(Utilities.ReadJsonData.GetData("Certification[" + i + "].CertificationName"));
+            CName.SendKeys(Utilities.ReadJsonData.GetData("Certification[" + i + "].CertificationName" ,fileName));
 
             CancelCBtn1.Click();
         }

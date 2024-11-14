@@ -10,6 +10,8 @@ using MarsQACompetitionTask.GlobalHelpers;
 using NUnit.Framework;
 using OpenQA.Selenium.Support.UI;
 using SeleniumExtras.WaitHelpers;
+using MarsQACompetitionTask.Utilities;
+using AventStack.ExtentReports;
 
 namespace MarsQACompetitionTask.Pages
 {
@@ -54,11 +56,11 @@ namespace MarsQACompetitionTask.Pages
         {
             EducationTab1.Click();
         }
-        public String CreateEducation()
+        public String CreateEducation(String fileName)
         {
             Thread.Sleep(2000);
             IList edudetails;
-            edudetails = Utilities.ReadJsonData.GetDataObject2("Education[*]");
+            edudetails = Utilities.ReadJsonData.GetDataObject2("Education[*]", fileName);
             int j = 0;
             j=  edudetails.Count;
            
@@ -68,20 +70,20 @@ namespace MarsQACompetitionTask.Pages
             {
                 AddNew.Click();
                 CollegeName.Click();
-                CollegeName.SendKeys(Utilities.ReadJsonData.GetData("Education["+i+"].CollegeUniversityName")); 
+                CollegeName.SendKeys(Utilities.ReadJsonData.GetData("Education["+i+"].CollegeUniversityName", fileName));
 
                 CountryNameDropdown.Click();                
-                CountryNameDropdown.SendKeys(Utilities.ReadJsonData.GetData("Education["+i+"].country"));
+                CountryNameDropdown.SendKeys(Utilities.ReadJsonData.GetData("Education["+i+"].country",  fileName));
 
                 TitleDropdown.Click();
-                TitleDropdown.SendKeys(Utilities.ReadJsonData.GetData("Education["+i+"].title")); 
+                TitleDropdown.SendKeys(Utilities.ReadJsonData.GetData("Education["+i+"].title", fileName));
 
                 Degree.Click();
                 Degree.Clear();
-                Degree.SendKeys(Utilities.ReadJsonData.GetData("Education["+i+ "].Degree")); 
+                Degree.SendKeys(Utilities.ReadJsonData.GetData("Education["+i+ "].Degree", fileName));
 
                 YearOfGraduationDropdown.Click();
-                YearOfGraduationDropdown.SendKeys(Utilities.ReadJsonData.GetData("Education["+i+"].yearOfGraduation"));
+                YearOfGraduationDropdown.SendKeys(Utilities.ReadJsonData.GetData("Education["+i+"].yearOfGraduation", fileName));
 
                 AddEducation.Click();
                 // Assert.That(AddMessagechk.Text == "Education had been Added", Is.True);
@@ -91,13 +93,60 @@ namespace MarsQACompetitionTask.Pages
                 wait.PollingInterval = TimeSpan.FromMilliseconds(200);
                 wait.Until(ExpectedConditions.ElementIsVisible(By.XPath("//*[normalize-space()='Education has been added']")));
 
-              //  Assert.IsTrue(AddMessagechk.Text == "Education had been Added");
+                //  Assert.IsTrue(AddMessagechk.Text == "Education had been Added");
 
             }
 
             return AddMessagechk.Text;
         }
-        public void CancelAddedEducation()
+        public String CreateEducation1()
+        {
+            Thread.Sleep(2000);
+            IList edudetails;
+           
+       
+
+
+            edudetails = Utilities.ReadJsonData.GetDataObject2("Education[*]");
+            int j = 0;
+            j = edudetails.Count;
+
+            Console.WriteLine("edu details '''''", j);
+
+            for (int i = 0; i < j; i++)
+            {
+                AddNew.Click();
+                CollegeName.Click();
+                CollegeName.SendKeys(Utilities.ReadJsonData.GetData("Education[" + i + "].CollegeUniversityName"));
+
+                CountryNameDropdown.Click();
+                CountryNameDropdown.SendKeys(Utilities.ReadJsonData.GetData("Education[" + i + "].country"));
+
+                TitleDropdown.Click();
+                TitleDropdown.SendKeys(Utilities.ReadJsonData.GetData("Education[" + i + "].title"));
+
+                Degree.Click();
+                Degree.Clear();
+                Degree.SendKeys(Utilities.ReadJsonData.GetData("Education[" + i + "].Degree"));
+
+                YearOfGraduationDropdown.Click();
+                YearOfGraduationDropdown.SendKeys(Utilities.ReadJsonData.GetData("Education[" + i + "].yearOfGraduation"));
+
+                AddEducation.Click();
+                // Assert.That(AddMessagechk.Text == "Education had been Added", Is.True);
+                Thread.Sleep(6000);
+                WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(20));
+
+                wait.PollingInterval = TimeSpan.FromMilliseconds(200);
+                wait.Until(ExpectedConditions.ElementIsVisible(By.XPath("//*[normalize-space()='Education has been added']")));
+
+                //  Assert.IsTrue(AddMessagechk.Text == "Education had been Added");
+
+            }
+
+            return AddMessagechk.Text;
+        }
+        public void CancelAddedEducation(String fileName)
         {
 
             EducationTab1.Click();
@@ -107,27 +156,27 @@ namespace MarsQACompetitionTask.Pages
 
             CollegeName.Click();
             CollegeName.Clear();
-            CollegeName.SendKeys(Utilities.ReadJsonData.GetData("Education[" + i + "].CollegeUniversityName"));
+            CollegeName.SendKeys(Utilities.ReadJsonData.GetData("Education[" + i + "].CollegeUniversityName", fileName));
 
             CountryNameDropdown.Click();
-            CountryNameDropdown.SendKeys(Utilities.ReadJsonData.GetData("Education[" + i + "].country"));
+            CountryNameDropdown.SendKeys(Utilities.ReadJsonData.GetData("Education[" + i + "].country", fileName));
 
 
             TitleDropdown.Click();
-            TitleDropdown.SendKeys(Utilities.ReadJsonData.GetData("Education[" + i + "].title"));
+            TitleDropdown.SendKeys(Utilities.ReadJsonData.GetData("Education[" + i + "].title", fileName));
 
 
             Degree.Click();
             Degree.Clear();
-            Degree.SendKeys(Utilities.ReadJsonData.GetData("Education[" + i + "].Degree"));
+            Degree.SendKeys(Utilities.ReadJsonData.GetData("Education[" + i + "].Degree", fileName));
 
             YearOfGraduationDropdown.Click();
-            YearOfGraduationDropdown.SendKeys(Utilities.ReadJsonData.GetData("Education[" + i + "].yearOfGraduation"));
+            YearOfGraduationDropdown.SendKeys(Utilities.ReadJsonData.GetData("Education[" + i + "].yearOfGraduation", fileName));
 
             CancelEducation.Click();
             
         }
-        public String EditEducation()
+        public String EditEducation(String fileName)
         {
             IWebElement EditEducation = driver.FindElement(By.XPath("//tbody/tr/td[6]/span[1]/i[1]"));
             Thread.Sleep(2000);
@@ -137,7 +186,7 @@ namespace MarsQACompetitionTask.Pages
  
             CollegeName.Click();
             CollegeName.Clear();
-            CollegeName.SendKeys(Utilities.ReadJsonData.GetData("Education[" + i + "].updateTitle"));
+            CollegeName.SendKeys(Utilities.ReadJsonData.GetData("Education[" + i + "].updateTitle", fileName));
 
 
             UpdateBtn.Click();
@@ -145,7 +194,7 @@ namespace MarsQACompetitionTask.Pages
             return UpdateMessage.Text;
         }
 
-        public void CancelEditEducation()
+        public void CancelEditEducation(String fileName)
         {
             IWebElement EditEducation = driver.FindElement(By.XPath("//tbody/tr/td[6]/span[1]/i[1]"));
             Thread.Sleep(2000);
@@ -155,7 +204,7 @@ namespace MarsQACompetitionTask.Pages
 
             CollegeName.Click();
             CollegeName.Clear();
-            CollegeName.SendKeys(Utilities.ReadJsonData.GetData("Education[" + i + "].CollegeUniversityName"));
+            CollegeName.SendKeys(Utilities.ReadJsonData.GetData("Education[" + i + "].CollegeUniversityName",fileName));
 
             CancelBtn1.Click();
         }
